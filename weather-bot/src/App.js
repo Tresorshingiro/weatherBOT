@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './index.css';
+import config from './config';
 
 const WeatherBot = () => {
   const [messages, setMessages] = useState([]);
@@ -28,15 +29,23 @@ const WeatherBot = () => {
 
   const fetchWeatherData = async (city) => {
     try {
-      const response = await fetch(`/api/weather?city=${encodeURIComponent(city)}`);
+      const response = await fetch(
+        `${config.API_URL}/api/weather?city=${encodeURIComponent(city)}`,
+        {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      
       const data = await response.json();
       
       if (!response.ok) {
         throw new Error(data.message || 'Failed to fetch weather data');
       }
 
-      return `In ${city}, 
-              it's currently ${data.temperature}°C with ${data.description}. 
+      return `In ${city}, it's currently ${data.temperature}°C with ${data.description}. 
               The humidity is ${data.humidity}%.`;
     } catch (error) {
       throw new Error(error.message);
