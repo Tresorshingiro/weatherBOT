@@ -1,9 +1,20 @@
 const express = require('express');
 const axios = require('axios');
 require('dotenv').config();
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 5000;
+
+app.use(cors({
+  origin: [
+    'https://ikirerebot.onrender.com',    // Your frontend URL
+    'http://localhost:3000'               // Local development URL
+  ],
+  methods: ['GET', 'POST', 'OPTIONS'],    // Allowed methods
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
 
 app.use(express.json());
 
